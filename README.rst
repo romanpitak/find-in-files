@@ -9,7 +9,7 @@ Find In Files
 Installation
 ============
 
-If you have `~/bin` in your `$PATH` it' as easy as:
+If you have ``~/bin`` in your ``$PATH`` it's as easy as:
 
 .. code:: bash
 
