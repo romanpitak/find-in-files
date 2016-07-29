@@ -1,4 +1,5 @@
 import mmap
+import os
 import re
 import subprocess
 import sys
@@ -13,6 +14,8 @@ except ImportError:
 def files(path):
 	for file_name in subprocess.check_output(['find', path, '-type', 'f']).decode().split('\n')[:-1]:
 		if file_name.startswith('./.git'):
+			continue
+		if 0 == os.stat(file_name).st_size:
 			continue
 		yield file_name
 
