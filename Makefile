@@ -2,7 +2,7 @@
 .PHONY: home-install clean
 
 build/fif: src/findinfiles.py
-	mkdir build
+	mkdir --parents -- build
 	printf '%s\n\n' '#!/bin/env python3' > $@
 	cat $< >> $@
 	chmod a+x $@
