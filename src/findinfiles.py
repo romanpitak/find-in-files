@@ -1,14 +1,20 @@
+import argparse
 import mmap
 import os
 import re
 import subprocess
-import sys
 
 try:
 	from termcolor import colored
 except ImportError:
 	def colored(text, color=None, on_color=None, attrs=None):
 		return text
+
+
+def config():
+	parser = argparse.ArgumentParser(description='Find regex in files.')
+	parser.add_argument('regex', help='Regular expression to be found in the files.')
+	return parser.parse_args()
 
 
 def files_find(path):
@@ -70,4 +76,5 @@ def main(needle):
 
 
 if '__main__' == __name__:
-	main(re.compile(sys.argv[1].encode(), re.MULTILINE))
+	config = config()
+	main(re.compile(config.regex.encode(), re.MULTILINE))
