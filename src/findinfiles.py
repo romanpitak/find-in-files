@@ -56,6 +56,7 @@ def main(needle):
 
 		def echo(message=''):
 			pager.stdin.write((str(message) + '\n').encode())
+			pager.stdin.flush()
 
 		for file_name in files('./'):
 			first_result = True
