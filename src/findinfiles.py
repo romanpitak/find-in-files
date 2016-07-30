@@ -16,7 +16,7 @@ def files_find(path):
 
 
 def files_walk(path):
-	for file_path, __, file_names in os.walk(path):
+	for file_path, __, file_names in os.walk(path.rstrip('/')):
 		for file_name in file_names:
 			yield os.sep.join([file_path, file_name])
 
