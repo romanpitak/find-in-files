@@ -11,8 +11,18 @@ except ImportError:
 		return text
 
 
+def files_find(path):
+	return subprocess.check_output(['find', path, '-type', 'f']).decode().split('\n')[:-1]
+
+
+def files_walk(path):
+	for file_path, __, file_names in os.walk(path):
+		for file_name in file_names:
+			yield os.sep.join([file_path, file_name])
+
+
 def files(path):
-	for file_name in subprocess.check_output(['find', path, '-type', 'f']).decode().split('\n')[:-1]:
+	for file_name in files_walk(path):
 		if file_name.startswith('./.git'):
 			continue
 		if 0 == os.stat(file_name).st_size:
