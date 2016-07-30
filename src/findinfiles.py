@@ -32,23 +32,23 @@ def files(path):
 
 def find_in_file(file_name, needle):
 	with open(file_name, 'r') as file_handle:
-		file_mmap = mmap.mmap(file_handle.fileno(), 0, prot=mmap.PROT_READ)
-		start, lineno = 0, 1
-		for match in re.finditer(needle, file_mmap):
-			while start < match.start():
-				position = file_mmap.find(b'\n', start, match.start())
-				if -1 == position:
-					break
-				lineno += 1
-				start = position + 1
-			file_mmap.seek(start)
-			lines = []
-			for __ in match.group(0).decode().split('\n'):
-				lines.append((lineno, file_mmap.readline().decode()[:-1]))
-				lineno += 1
-			yield lines
-			lineno -= 1
-			start = match.end()
+		with mmap.mmap(file_handle.fileno(), 0, prot=mmap.PROT_READ) as file_mmap:
+			start, lineno = 0, 1
+			for match in re.finditer(needle, file_mmap):
+				while start < match.start():
+					position = file_mmap.find(b'\n', start, match.start())
+					if -1 == position:
+						break
+					lineno += 1
+					start = position + 1
+				file_mmap.seek(start)
+				lines = []
+				for __ in match.group(0).decode().split('\n'):
+					lines.append((lineno, file_mmap.readline().decode()[:-1]))
+					lineno += 1
+				yield lines
+				lineno -= 1
+				start = match.end()
 
 
 def main(needle):
