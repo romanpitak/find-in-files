@@ -50,7 +50,7 @@ def find_in_file(file_name, needle):
 				file_mmap.seek(start)
 				lines = []
 				for __ in match.group(0).decode().split('\n'):
-					lines.append((lineno, file_mmap.readline().decode()[:-1]))
+					lines.append((lineno, file_mmap.readline()[:-1]))
 					lineno += 1
 				yield lines
 				lineno -= 1
@@ -60,18 +60,18 @@ def find_in_file(file_name, needle):
 def main(needle):
 	with subprocess.Popen(['less', '--no-init', '--quit-if-one-screen'], stdin=subprocess.PIPE) as pager:
 
-		def echo(message=''):
-			pager.stdin.write((str(message) + '\n').encode())
+		def echo(message=b''):
+			pager.stdin.write(message + b'\n')
 			pager.stdin.flush()
 
 		for file_name in files('./'):
 			first_result = True
 			for result in find_in_file(file_name, needle):
 				if first_result:
-					echo(colored(file_name, 'red', attrs=['bold']))
+					echo(colored(file_name, 'red', attrs=['bold']).encode())
 					first_result = False
 				for line_number, line in result:
-					echo(colored(str(line_number) + ':', 'green') + line)
+					echo(colored(str(line_number) + ':', 'green').encode() + line)
 				echo()
 
 
