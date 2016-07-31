@@ -1,4 +1,6 @@
 import argparse
+import logging
+from logging import debug, info, warning, error, exception
 import mmap
 import os
 import re
@@ -13,6 +15,7 @@ except ImportError:
 
 def config():
 	parser = argparse.ArgumentParser(description='Find regex in files.')
+	parser.add_argument('-v', '--verbose', action='count', help="-v ~ info | -vv ~ debug")
 	parser.add_argument('regex', help='Regular expression to be found in the files.')
 	return parser.parse_args()
 
@@ -77,4 +80,12 @@ def main(needle):
 
 if '__main__' == __name__:
 	config = config()
+	if config.verbose is None:
+		logging.basicConfig(level=logging.WARNING)
+	elif 1 == config.verbose:
+		logging.basicConfig(level=logging.INFO)
+	else:
+		logging.basicConfig(level=logging.DEBUG)
+	debug('CONFIG: %s', config)
+
 	main(re.compile(config.regex.encode(), re.MULTILINE))
